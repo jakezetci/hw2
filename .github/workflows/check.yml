@@ -1,0 +1,41 @@
+# This workflow will install Python dependencies, run tests and lint with a single version of Python
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
+
+name: LSP
+
+on: [push, pull_request]
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    name: Check LSP
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        lfs: true
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+    - name: Install requirements
+      run: pip install -r requirements.txt
+    - name: Try module lsp
+      run:
+        python -m unittest test
+    - name: Try eval.py
+      run: |
+        rm -f ./chi2.png
+        python eval.py
+    - name: Check chi2.png
+      run: test -e ./chi2.png
+    - name: Try ccd.py
+      run: |
+        rm -f ./ccd.png
+        rm -f ./ccd.json
+        python ccd.py
+    - name: Check ccd.png
+      run: test -e ./ccd.png
+    - name: Check ccd.json
+      run: python ./.github/workflows/check.py ./ccd.json
+
