@@ -54,3 +54,4 @@ if __name__ == "__main__":
         }
     with open('ccd.json', 'w') as f:
         json.dump(d, f, indent=2)
+    
