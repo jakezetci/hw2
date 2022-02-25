@@ -5,23 +5,13 @@ import matplotlib
 import matplotlib.pyplot as plt
 import json
 
-def linear(a, b):
-    pass  
-
       
 if __name__ == "__main__":
     with fits.open('ccd.fits') as hdul:
         hdul.verify('fix')
         data = hdul[0].data
     data = np.asarray(data, dtype=np.int32)
-    """
-    plt.figure()
-    plt.imshow(data[5,1,:,:])
-    plt.figure()
-    plt.imshow(data[5,0,:,:])
-    plt.figure()
-    plt.imshow(data[45, 1, :, :] + data[45, 0, :, :])
-    """
+
     data_better = (data[:, 1, :, :] - data[:, 0, :, :])
     sigma_x = np.var(data_better, axis=(1, 2))
     x = np.mean(data, axis=(1, 2, 3))
